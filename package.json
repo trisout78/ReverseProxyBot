@@ -1,0 +1,15 @@
+{
+  "name": "v14-commandhandler",
+  "version": "1.0.0",
+  "description": "A command handler that allow you to set permissions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "0xyToan",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "discord.js": "^14.21.0"
+  }
+}

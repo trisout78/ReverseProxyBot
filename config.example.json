@@ -1,0 +1,13 @@
+{
+    "token": "YOUR_DISCORD_BOT_TOKEN_HERE",
+    "permission": {
+        "base": ":x: You don't have the `{perm}` permission to do that !",
+        "NOTE": "This permission check only applies in servers, not in DMs (user installs)"
+    },
+    "nginxPM": {
+        "ip": "YOUR_REVERSE_PROXY_SERVER_IP",
+        "host": "http://your-nginx-pm-domain.com:81",
+        "email": "your-email@example.com",
+        "pass": "your-nginx-pm-password"
+    }
+}
