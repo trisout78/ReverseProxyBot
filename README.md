@@ -187,11 +187,3 @@ Each user can only see and manage their own proxies.
 ├── index.js           # Entry point
 └── package.json       # Dependencies
 ```
-
-## License
-
-ISC
-
-You need `discord.js V14`
-
-Change the permission text in `config.json` you can also see an example in `commands/test.js` !
