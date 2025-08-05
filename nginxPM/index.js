@@ -4,6 +4,7 @@ const { proxyDomain } = require('./proxy')
 const { findProxy } = require('./findProxy')
 const { deleteProxy } = require('./deleteProxy')
 const { toggleSsl } = require('./toggleSsl')
+const { updateCustomConfig } = require('./customConfig')
 
 module.exports = {
     getKey,
@@ -11,5 +12,6 @@ module.exports = {
     proxyDomain,
     findProxy,
     deleteProxy,
-    toggleSsl
+    toggleSsl,
+    updateCustomConfig
 }

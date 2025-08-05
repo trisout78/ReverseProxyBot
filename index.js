@@ -7,6 +7,29 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 const config = require("./config.json")
 
+process.on('uncaughtException', (error) => {
+    console.error('❌ Uncaught Exception:', error)
+    console.error('Stack:', error.stack)
+})
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('❌ Unhandled Rejection at:', promise)
+    console.error('Reason:', reason)
+})
+
+// Graceful shutdown
+process.on('SIGINT', () => {
+    console.log('\n🔄 Gracefully shutting down...')
+    client.destroy()
+    process.exit(0)
+})
+
+process.on('SIGTERM', () => {
+    console.log('\n🔄 Gracefully shutting down...')
+    client.destroy()
+    process.exit(0)
+})
+
 const commands = new Collection()
 
 const files = readdirSync("./commands")
@@ -27,19 +50,32 @@ client.once(Events.ClientReady, c => {
 
 
 client.on(Events.InteractionCreate, interaction => {
-    if(!interaction.isCommand()) return
-    if(!commands.has(interaction.commandName)) return
-    try {
-        let command = commands.get(interaction.commandName)
-        
-        // Skip permission check for user installs (DMs)
-        if (interaction.guild && !interaction.member.permissions.has(command.permission)) {
-            return interaction.reply({ content: config.permission.base.replaceAll("{perm}", getPermissionName(command.permission)) });
+    if(interaction.isCommand()) {
+        if(!commands.has(interaction.commandName)) return
+        try {
+            let command = commands.get(interaction.commandName)
+            
+            // Skip permission check for user installs (DMs)
+            if (interaction.guild && !interaction.member.permissions.has(command.permission)) {
+                return interaction.reply({ content: config.permission.base.replaceAll("{perm}", getPermissionName(command.permission)) });
+            }
+            
+            command.execute(interaction, client)
+        } catch (error) {
+            console.error(error)
         }
-        
-        command.execute(interaction, client)
-    } catch (error) {
-        console.error(error)
+    } else if (interaction.isButton()) {
+        // Handle button interactions for custom-configuration
+        if (interaction.customId.startsWith('edit_config_') || interaction.customId.startsWith('clear_config_')) {
+            const CustomConfigCommand = require('./commands/custom-configuration')
+            CustomConfigCommand.handleButtonInteraction(interaction)
+        }
+    } else if (interaction.isModalSubmit()) {
+        // Handle modal submissions for custom-configuration
+        if (interaction.customId.startsWith('config_modal_')) {
+            const CustomConfigCommand = require('./commands/custom-configuration')
+            CustomConfigCommand.handleModalSubmit(interaction)
+        }
     }
 })
 
