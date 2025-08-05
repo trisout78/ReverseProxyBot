@@ -21,6 +21,7 @@ for(const fileName of filesName) {
 
 client.once(Events.ClientReady, c => {
     client.application.commands.set(commands.map(({ execute, ...data }) => data))
+    client.user.setActivity('your proxies', { type: Discord.ActivityType.Watching });
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
